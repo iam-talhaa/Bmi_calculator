@@ -1,5 +1,6 @@
 import 'package:bmi/custom_widgets/TextformField.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -30,6 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     TextFormField(
                       controller: _nameController,
                       maxLines: 1,
+                      keyboardType: TextInputType.name,
                       decoration: InputDecoration(
                           hintText: "Enter your Name",
                           border: OutlineInputBorder(
@@ -41,6 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     TextFormField(
                       controller: _heightController,
                       maxLines: 1,
+                      keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                           hintText: "Height [inches]",
                           border: OutlineInputBorder(
@@ -62,7 +65,20 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             GestureDetector(
-              onTap: () {},
+              onTap: () async {
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                await prefs.setString('P_name', _nameController.text);
+                await prefs.setString('P_height', _heightController.text);
+                await prefs.setString('P_weight', _weightCOntroller.text);
+
+                final String? p_name = prefs.getString('P_name');
+                final String? p_height = prefs.getString('P_height');
+                final String? p_wight = prefs.getString('P_weight');
+
+                print(p_name);
+                print(p_wight);
+                print(p_height);
+              },
               child: Padding(
                 padding: const EdgeInsets.all(10),
                 child: Container(
