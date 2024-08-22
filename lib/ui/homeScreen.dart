@@ -71,13 +71,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 await prefs.setString('P_height', _heightController.text);
                 await prefs.setString('P_weight', _weightCOntroller.text);
 
-                final String? p_name = prefs.getString('P_name');
-                final String? p_height = prefs.getString('P_height');
-                final String? p_wight = prefs.getString('P_weight');
+                String? p_name = prefs.getString('P_name');
+                String? p_height = prefs.getString('P_height');
+                String? p_wight = prefs.getString('P_weight');
 
                 print(p_name);
                 print(p_wight);
                 print(p_height);
+                setState(() {});
               },
               child: Padding(
                 padding: const EdgeInsets.all(10),
@@ -97,7 +98,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   )),
                 ),
               ),
-            )
+            ),
+            Text("NAME : ${_heightController.text}"),
           ],
         ),
       ),
