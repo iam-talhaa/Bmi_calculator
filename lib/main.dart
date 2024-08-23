@@ -1,6 +1,5 @@
 import 'package:bmi/ui/homeScreen.dart';
 import 'package:bmi/ui/person_list.dart';
-import 'package:bmi/ui/splash_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -16,7 +15,7 @@ class MyApp extends StatelessWidget {
     print("");
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: PersonList(),
+      home: HomeScreen(),
     );
   }
 }
