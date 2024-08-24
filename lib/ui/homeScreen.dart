@@ -44,6 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
       double meterSquare = heightinmeter * heightinmeter;
       //double BMI = weight_value / meterSquare;
       print('object');
+      print('object');
 
       print("HEIGHT [Feet]   : ${foot_value}");
       print("HEIGHT [inches] : ${inches_value}");
