@@ -32,11 +32,10 @@ class _HomeScreenState extends State<HomeScreen> {
       double inches_controller = double.parse(_inchesController.text);
       double foot_controller = double.parse(_footController.text);
       double weight_controller = double.parse(_weightCOntroller.text);
-      setState(() {
-        foot_value = foot_controller;
-        inches_value = inches_controller;
-        weight_value = weight_controller;
-      });
+      setState(() {});
+      foot_value = foot_controller;
+      inches_value = inches_controller;
+      weight_value = weight_controller;
       await prefs.setDouble('F_height', foot_value);
       await prefs.setDouble('I_height', inches_value);
       await prefs.setDouble('P_weight', weight_value);
@@ -44,6 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
       double heightinmeter = foot_value * 12 + inches_value;
       double meterSquare = heightinmeter * heightinmeter;
       //double BMI = weight_value / meterSquare;
+      print('object');
 
       print("HEIGHT [Feet]   : ${foot_value}");
       print("HEIGHT [inches] : ${inches_value}");
@@ -180,7 +180,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     Divider(),
                     Text("Weight[kg]     :${weight_value}"),
                     Divider(),
-                    Text('BMI :${weight_value / meterSquare} ')
+                    Text('BMI            :${weight_value / meterSquare} ')
                   ],
                 ),
               ),
