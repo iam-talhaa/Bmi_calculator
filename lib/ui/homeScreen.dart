@@ -10,24 +10,48 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   TextEditingController _nameController = TextEditingController();
-  TextEditingController _heightController = TextEditingController();
+  TextEditingController _inchesController = TextEditingController();
   TextEditingController _weightCOntroller = TextEditingController();
-  double height_value = 0.0;
+  TextEditingController _footController = TextEditingController();
+  double foot_value = 0.0;
+  double inches_value = 0.0;
   double weight_value = 0.0;
+  double heightinmeter = 0.0;
+  double BMI = 0.0;
+  double meterSquare = 0.0;
 
-  void H_Conversion() {
+  List<String> person_name = [];
+  List<double> person_height = [];
+  List<double> person_weight = [];
+
+  void H_Conversion() async {
     try {
-      double height_controller = double.parse(_heightController.text);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+
+//
+      double inches_controller = double.parse(_inchesController.text);
+      double foot_controller = double.parse(_footController.text);
       double weight_controller = double.parse(_weightCOntroller.text);
       setState(() {
-        height_value = height_controller;
+        foot_value = foot_controller;
+        inches_value = inches_controller;
         weight_value = weight_controller;
-        print(height_value);
-        print(weight_value);
       });
+      await prefs.setDouble('F_height', foot_value);
+      await prefs.setDouble('I_height', inches_value);
+      await prefs.setDouble('P_weight', weight_value);
+      await prefs.setString('P_name', _nameController.text);
+      double heightinmeter = foot_value * 12 + inches_value;
+      double meterSquare = heightinmeter * heightinmeter;
+      //double BMI = weight_value / meterSquare;
+
+      print("HEIGHT [Feet]   : ${foot_value}");
+      print("HEIGHT [inches] : ${inches_value}");
+      print('METER HEIGHT    : $heightinmeter');
+      print('BMI weight $weight_value');
+      print("BMI: ${weight_value / 5}");
     } catch (e) {
-      // Handle parsing errors (e.g., non-numeric input)
-      print('Error parsing double: $e');
+      print('Error: $e');
     }
   }
 
@@ -49,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     TextFormField(
                       controller: _nameController,
@@ -58,6 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       decoration: InputDecoration(
                           fillColor: Colors.white,
                           filled: true,
+                          labelText: "Name",
                           hintText: "Enter your Name",
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10))),
@@ -65,16 +90,36 @@ class _HomeScreenState extends State<HomeScreen> {
                     SizedBox(
                       height: 20,
                     ),
-                    TextFormField(
-                      controller: _heightController,
-                      maxLines: 1,
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                          fillColor: Colors.white,
-                          filled: true,
-                          hintText: "Height [inches]",
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: TextFormField(
+                            controller: _footController,
+                            maxLines: 1,
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                                fillColor: Colors.white,
+                                filled: true,
+                                hintText: "Feet",
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10))),
+                          ),
+                        ),
+                        Expanded(
+                          child: TextFormField(
+                            controller: _inchesController,
+                            maxLines: 1,
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                                fillColor: Colors.white,
+                                filled: true,
+                                hintText: "inches",
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10))),
+                          ),
+                        ),
+                      ],
                     ),
                     SizedBox(
                       height: 20,
@@ -94,31 +139,17 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             GestureDetector(
-              onTap: () async {
-                SharedPreferences prefs = await SharedPreferences.getInstance();
-                await prefs.setString('P_name', _nameController.text);
-                await prefs.setString('P_height', _heightController.text);
-                await prefs.setString('P_weight', _weightCOntroller.text);
-
-                String? p_name = prefs.getString('P_name');
-                String? p_height = prefs.getString('P_height');
-                String? p_wight = prefs.getString('P_weight');
-
-                // print(p_name);
-                // print(p_wight);
-                // print(p_height);
-                setState(() {});
-
+              onTap: () {
                 H_Conversion();
               },
               child: Padding(
-                padding: const EdgeInsets.all(10),
+                padding: const EdgeInsets.all(20),
                 child: Container(
                   height: 50,
                   width: double.infinity,
                   decoration: BoxDecoration(
                       gradient: LinearGradient(
-                          colors: [Color(0xff00416A), Color(0xffE4E5E6)]),
+                          colors: [Color(0xff11998e), Color(0xff38ef7d)]),
                       borderRadius: BorderRadius.circular(15),
                       color: Colors.blue),
                   child: Center(
@@ -132,22 +163,26 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            Container(
-              height: 170,
-              width: 200,
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      colors: [Color(0xff9796f0), Color(0xfffbc7d4)]),
-                  borderRadius: BorderRadius.circular(20),
-                  color: Colors.white),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("NAME :${_nameController.text.toUpperCase()}"),
-                  Text("Height[inches] :${height_value}"),
-                  Text("Weight[kg] :${weight_value}")
-                ],
+            Card(
+              child: Container(
+                height: 170,
+                width: 300,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: Colors.white),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text("NAME   :${_nameController.text.toUpperCase()}"),
+                    Divider(),
+                    Text("foot:${foot_value}:Inches${inches_value}"),
+                    Divider(),
+                    Text("Weight[kg]     :${weight_value}"),
+                    Divider(),
+                    Text('BMI :${weight_value / meterSquare} ')
+                  ],
+                ),
               ),
             ),
           ],
