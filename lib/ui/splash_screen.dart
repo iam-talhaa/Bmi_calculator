@@ -21,6 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print('chceh');
     return Scaffold(
       body: Column(
         children: [
