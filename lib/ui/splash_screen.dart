@@ -23,6 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     print('chceh');
     print('chceh');
+    print('chceh');
     return Scaffold(
       body: Column(
         children: [
