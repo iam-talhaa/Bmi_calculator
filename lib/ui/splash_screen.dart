@@ -24,6 +24,7 @@ class _SplashScreenState extends State<SplashScreen> {
     print('chceh');
     print('chceh');
     print('chceh');
+    print('chceh');
     return Scaffold(
       body: Column(
         children: [
